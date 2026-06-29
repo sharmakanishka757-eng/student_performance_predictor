@@ -19,7 +19,7 @@ The application is cleanly decoupled into three core pipeline components:
 ---
 
 ## 📂 Project Repository Structure
-
+```text
 ├── app.py                     # Flask backend controller & rule-based advice logic
 ├── generate_data.py           # Synthetic dataset generator with human variance noise
 ├── train_model.py             # Scikit-learn Random Forest model training pipeline
@@ -27,6 +27,7 @@ The application is cleanly decoupled into three core pipeline components:
 ├── student_predictor_model.pkl # Serialized machine learning model (Pickle file)
 └── templates/
     └── index.html             # Dynamic dashboard UI utilizing Jinja templating
+```
 
 ## 🛠️ Code Deep Dive & Explanations
 
