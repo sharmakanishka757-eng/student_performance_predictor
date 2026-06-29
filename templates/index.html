@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scholar - Predictor</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: #FAF6F0;
+            color: #2C1A14;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background-color: #FAF6F0;
+            border-bottom: 1px solid #EFEAE2;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2C1A14;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            background-color: #802213;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 50%;
+        }
+
+        nav a {
+            margin-left: 20px;
+            text-decoration: none;
+            color: #61524C;
+            font-size: 15px;
+        }
+
+        .hero {
+            text-align: center;
+            padding: 60px 20px 40px 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero p.sub {
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #8C7E74;
+            margin-bottom: 15px;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            font-family: Georgia, serif;
+            font-weight: normal;
+            margin: 0 0 20px 0;
+            line-height: 1.1;
+        }
+
+        .hero h1 em {
+            color: #802213;
+            font-style: normal;
+        }
+
+        .hero p.desc {
+            font-size: 16px;
+            color: #61524C;
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        .main-layout {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            padding: 0 4% 50px 4%;
+        }
+
+        @media(max-width: 850px) {
+            .main-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card-left {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid #EFEAE2;
+        }
+
+        .card-left h2 {
+            font-size: 22px;
+            font-family: Georgia, serif;
+            margin-top: 0;
+        }
+
+        .card-left p.instructions {
+            font-size: 14px;
+            color: #8C7E74;
+            margin-bottom: 25px;
+        }
+
+        .slider-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width: 500px) {
+            .slider-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .slider-group {
+            margin-bottom: 15px;
+        }
+
+        .slider-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .slider-label-row span.unit {
+            font-weight: normal;
+            color: #8C7E74;
+            font-size: 12px;
+        }
+
+        input[type=range] {
+            width: 100%;
+            accent-color: #802213;
+        }
+
+        .slider-val {
+            font-size: 14px;
+            color: #61524C;
+            margin-top: 3px;
+        }
+
+        .toggle-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .toggle-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #EFEAE2;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .toggle-btn.active {
+            background: #802213;
+            color: white;
+            border-color: #802213;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: #802213;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 25px;
+        }
+
+        .card-right {
+            background: #802213;
+            color: white;
+            border-radius: 20px;
+            padding: 35px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .card-right.empty {
+            background: #C4B5A8;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .card-right h3.label {
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin: 0 0 5px 0;
+        }
+
+        .card-right h1.output-class {
+            font-size: 56px;
+            font-family: Georgia, serif;
+            margin: 0 0 10px 0;
+            font-weight: normal;
+        }
+
+        .card-right p.output-desc {
+            font-size: 15px;
+            opacity: 0.9;
+            margin: 0 0 25px 0;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .prob-row {
+            margin-bottom: 12px;
+        }
+
+        .prob-text {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .prob-bar-bg {
+            background: rgba(255, 255, 255, 0.2);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .prob-bar-fill {
+            background: white;
+            height: 100%;
+        }
+
+        .contributions-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .contrib-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .advice-section {
+            max-width: 1100px;
+            margin: 0 auto 60px auto;
+            padding: 0 4%;
+        }
+
+        .advice-section h2 {
+            font-family: Georgia, serif;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .advice-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media(max-width: 750px) {
+            .advice-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .advice-card {
+            background: #FFFDF9;
+            border: 1px solid #EFEAE2;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .advice-tag {
+            display: inline-block;
+            font-size: 10px;
+            font-weight: bold;
+            background: #F4EFE6;
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .advice-card h4 {
+            margin: 0 0 8px 0;
+            font-size: 16px;
+        }
+
+        .advice-card p {
+            margin: 0;
+            font-size: 14px;
+            color: #61524C;
+            line-height: 1.4;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo"><span>S</span> Scholar</div>
+        <nav>
+            <a href="#">Predictor</a>
+        </nav>
+    </header>
+
+    <div class="hero">
+        <p class="sub">A Study Companion · Est. 2026</p>
+        <h1>Classify your next <em>performance band</em> before exam day.</h1>
+        <p class="desc">A transparent classification model sorts you into Excellent, Good, Average, At Risk or Failing —
+            using study, attendance, sleep, revision, backlogs and prior grades.</p>
+    </div>
+
+    <form action="/predict" method="POST">
+        <div class="main-layout">
+
+            <div class="card-left">
+                <h2>Your study profile</h2>
+                <p class="instructions">Fill in your details, then click Predict to see your classification.</p>
+
+                <div class="slider-grid">
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <label>Study hours / day</label>
+                            <span class="unit">0-10</span>
+                        </div>
+                        <input type="range" name="study_hours" min="0" max="10" step="0.1"
+                            value="{{ inputs.study_hours if prediction else '3.0' }}"
+                            oninput="this.nextElementSibling.innerText = this.value + ' h'">
+                        <div class="slider-val">{{ inputs.study_hours if prediction else '3.0' }} h</div>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <label>Attendance</label>
+                            <span class="unit">%</span>
+                        </div>
+                        <input type="range" name="attendance" min="0" max="100" step="1"
+                            value="{{ inputs.attendance if prediction else '85' }}"
+                            oninput="this.nextElementSibling.innerText = this.value + '%'">
+                        <div class="slider-val">{{ inputs.attendance if prediction else '85' }}%</div>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <label>Prior grade</label>
+                            <span class="unit">last term</span>
+                        </div>
+                        <input type="range" name="prior_grade" min="0" max="100" step="1"
+                            value="{{ inputs.prior_grade if prediction else '75' }}"
+                            oninput="this.nextElementSibling.innerText = this.value + ' / 100'">
+                        <div class="slider-val">{{ inputs.prior_grade if prediction else '75' }} / 100</div>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <label>Sleep / night</label>
+                            <span class="unit">hours</span>
+                        </div>
+                        <input type="range" name="sleep_hours" min="4" max="9" step="0.1"
+                            value="{{ inputs.sleep_hours if prediction else '7.0' }}"
+                            oninput="this.nextElementSibling.innerText = this.value + ' h'">
+                        <div class="slider-val">{{ inputs.sleep_hours if prediction else '7.0' }} h</div>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <label>Assignments done</label>
+                            <span class="unit">%</span>
+                        </div>
+                        <input type="range" name="assignments" min="0" max="100" step="1"
+                            value="{{ inputs.assignments if prediction else '80' }}"
+                            oninput="this.nextElementSibling.innerText = this.value + '%'">
+                        <div class="slider-val">{{ inputs.assignments if prediction else '80' }}%</div>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <label>Revision frequency</label>
+                            <span class="unit">days/week</span>
+                        </div>
+                        <input type="range" name="revision_freq" min="0" max="7" step="1"
+                            value="{{ inputs.revision_freq if prediction else '2' }}"
+                            oninput="this.nextElementSibling.innerText = this.value + ' days'">
+                        <div class="slider-val">{{ inputs.revision_freq if prediction else '2' }} days</div>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <label>Backlogs</label>
+                            <span class="unit">unresolved topics</span>
+                        </div>
+                        <input type="range" name="backlogs" min="0" max="3" step="1"
+                            value="{{ inputs.backlogs if prediction else '0' }}"
+                            oninput="this.nextElementSibling.innerText = this.value + ' topics'">
+                        <div class="slider-val">{{ inputs.backlogs if prediction else '0' }} topics</div>
+                    </div>
+
+                    <div class="slider-group">
+                        <div class="slider-label-row">
+                            <label>Tutoring / study group</label>
+                        </div>
+                        <div class="toggle-group">
+                            <input type="hidden" name="tutoring" id="tutoring_val"
+                                value="{{ inputs.tutoring if prediction else '0' }}">
+                            <button type="button"
+                                class="toggle-btn {% if prediction and inputs.tutoring == '1' %}active{% endif %}"
+                                onclick="setTutoring(1, this)">Yes</button>
+                            <button type="button"
+                                class="toggle-btn {% if not prediction or inputs.tutoring == '0' %}active{% endif %}"
+                                onclick="setTutoring(0, this)">No</button>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Predict my performance</button>
+            </div>
+
+            {% if not prediction %}
+            <div class="card-right empty">
+                <h2>Ready to predict</h2>
+                <p>Fill in your metrics and click the button to see your live calculations.</p>
+            </div>
+            {% else %}
+            <div class="card-right">
+                <h3 class="label">Predicted Class</h3>
+                <h1 class="output-class">{{ pred_class }} .<span style="font-size:28px;">{% if pred_class=='Excellent'
+                        %}A{% elif pred_class=='Good' %}B{% elif pred_class=='Average' %}C{% elif pred_class=='At Risk'
+                        %}D{% else %}F{% endif %}</span></h1>
+                <p class="output-desc">{{ pred_desc }}<br><strong>Confidence: {{ confidence }}%</strong></p>
+
+                <h3 class="label" style="margin-bottom: 15px;">Class Probabilities</h3>
+                {% for cls, val in prob_dict.items() %}
+                <div class="prob-row">
+                    <div class="prob-text">
+                        <span>{{ cls }}</span>
+                        <span>{{ val }}%</span>
+                    </div>
+                    <div class="prob-bar-bg">
+                        <div class="prob-bar-fill" style="width: {{ val }}%;"></div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="contributions-section">
+                    <h3 class="label" style="margin-bottom: 15px;">Feature Contributions</h3>
+                    {% for c in contributions %}
+                    <div class="contrib-row">
+                        <span style="opacity:0.8;">{{ c.name }}</span>
+                        <span style="font-family:monospace; font-weight:bold;">{{ c.val }}</span>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+        </div>
+    </form>
+
+    {% if prediction %}
+    <div class="advice-section">
+        <h2>Your personalized advice</h2>
+        <div class="advice-grid">
+            {% for card in advice_cards %}
+            <div class="advice-card">
+                <span class="advice-tag">{{ card.tag }}</span>
+                <h4>{{ card.title }}</h4>
+                <p>{{ card.text }}</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+        function setTutoring(val, btn) {
+            document.getElementById('tutoring_val').value = val;
+            let btns = btn.parentElement.getElementsByClassName('toggle-btn');
+            for (let b of btns) { b.classList.remove('active'); }
+            btn.classList.add('active');
+        }
+    </script>
+</body>
+
+</html>
